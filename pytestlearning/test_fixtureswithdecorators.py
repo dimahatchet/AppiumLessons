@@ -25,7 +25,7 @@ def before():
 #     print("Executing User Reg test")
 
 @pytest.mark.usefixtures("setup", "before")
-def test_dologin():
+def test_do_login():
     print("Executing login test")
 
 

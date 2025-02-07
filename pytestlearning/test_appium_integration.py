@@ -43,7 +43,7 @@ class TestAppium(unittest.TestCase):
 
 @pytest.mark.usefixtures("log_on_failure")
 @pytest.mark.parametrize("city,country", dataProvider.get_data("SearchTest"))
-def test_dologin(city,country,appium_driver):
+def test_do_login(city,country,appium_driver):
      driver = appium_driver
      driver.find_element_by_id('com.goibibo:id/btn1').click()
      driver.find_element_by_accessibility_id('destination').click()
@@ -61,7 +61,7 @@ def test_dologin(city,country,appium_driver):
 
 
 
-def test_searchVillas(appium_driver):
+def test_search_villas(appium_driver):
     driver = appium_driver
     driver.find_element_by_xpath("//android.widget.TextView[@text='Villas & Apts']").click()
     driver.find_element_by_xpath("//android.widget.TextView[@text='Area, Landmark or Property']").click()

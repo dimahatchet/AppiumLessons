@@ -16,7 +16,7 @@ def teardown_function(function):
     print("Quitting the browser")
 
 
-def test_dologin():
+def test_do_login():
     print("Executing login test")
 
 

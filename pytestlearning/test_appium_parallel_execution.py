@@ -11,7 +11,7 @@ from utilities import dataProvider
 
 
 @pytest.mark.usefixtures("log_on_failure")
-def test_dologin(appium_driver):
+def test_do_login(appium_driver):
     driver = appium_driver
     driver.get("http://google.com")
     driver.find_element_by_xpath("//*[@name='q']").send_keys("Hello Appium !!!")

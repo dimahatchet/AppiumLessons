@@ -18,7 +18,7 @@ def get_data():
 
 
 @pytest.mark.parametrize("username,password", get_data())
-def test_dologin(username, password):
+def test_do_login(username, password):
     print(username, "---", password)
     logger = log()
     logger.info("This is a v new log")
