@@ -8,7 +8,7 @@ import logging
 # log.info("This is our first log")
 
 def log():
-    logging.basicConfig(filename=".\\Logs\\logfile.log", format='%(asctime)s: %(levelname)s: %(message)s',
+    logging.basicConfig(filename="..\\Logs\\logfile.log", format='%(asctime)s: %(levelname)s: %(message)s',
                         datefmt='%m/%d/%Y %I:%M:%S %p'
                         , level=logging.INFO)
     logger = logging.getLogger()

@@ -1,11 +1,16 @@
 import time
 import unittest
+
+import allure
 import pytest
+from allure_commons.types import AttachmentType
 
 from appium import webdriver
 from appium.options.android import UiAutomator2Options
 from appium.webdriver.appium_service import AppiumService
 from appium.webdriver.common.appiumby import AppiumBy
+
+from pytestlearning.conftest import screen_on_failure
 
 desired_caps = dict(
 
@@ -18,31 +23,38 @@ desired_caps = dict(
 
 )
 
-appium_service = AppiumService()
-appium_service.start()
+def get_data():
+        return [
+        "2",
+        "4"
+    ]
 
-appium_server_url = 'http://localhost:4723'
-capabilities_options = UiAutomator2Options().load_capabilities(desired_caps)
+def setup_function():
+        global appium_service
+        appium_service = AppiumService()
+        appium_service.start()
 
+        appium_server_url = 'http://localhost:4723'
+        capabilities_options = UiAutomator2Options().load_capabilities(desired_caps)
+        global driver
+        driver = webdriver.Remote(appium_server_url, options=capabilities_options)
 
-class TestAppium(unittest.TestCase):
-    def setUp(self) -> None:
-        self.driver = webdriver.Remote(appium_server_url, options=capabilities_options)
-
-    def tearDown(self) -> None:
-        if self.driver:
-            self.driver.quit()
+def teardown_function():
+        driver.quit()
         appium_service.stop()
-
-    def test_calculator(self) -> None:
+@pytest.mark.usefixtures("screen_on_failure")
+@pytest.mark.parametrize("number", get_data())
+def test_calculator(number):
         time.sleep(2)
-        self.driver.find_element(AppiumBy.ACCESSIBILITY_ID, '2').click()
-        self.driver.find_element(AppiumBy.ACCESSIBILITY_ID, 'plus').click()
-        self.driver.find_element(AppiumBy.ACCESSIBILITY_ID, '4').click()
-        #self.driver.find_element(AppiumBy.ACCESSIBILITY_ID, 'equals').click()
-        equation_result = self.driver.find_element(AppiumBy.ID,'com.google.android.calculator:id/result_preview').text
+        driver.find_element(AppiumBy.ACCESSIBILITY_ID, number).click()
+        driver.find_element(AppiumBy.ACCESSIBILITY_ID, 'plus').click()
+        driver.find_element(AppiumBy.ACCESSIBILITY_ID, number).click()
+        #driver.find_element(AppiumBy.ACCESSIBILITY_ID, 'equals').click()
+        equation_result = driver.find_element(AppiumBy.ID,'com.google.android.calculator:id/result_preview').text
         print(equation_result)
-        assert int(equation_result) == 6
+        assert int(equation_result) == int(number)*2
+        #allure.attach(driver.get_screenshot_as_png(),name="screen", attachment_type=AttachmentType.PNG)
+        driver.find_element(AppiumBy.ACCESSIBILITY_ID, 'clear').click()
 
 if __name__ == '__main__':
     unittest.main()
